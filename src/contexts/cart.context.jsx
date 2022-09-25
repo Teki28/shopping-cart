@@ -27,7 +27,6 @@ const removeCartItem = (cartItems,productToRemove)=>{
   const filteredCartItems =  cartItems.filter((item)=>(
     item.id!==productToRemove.id
   ))
-  console.log(filteredCartItems)
   return filteredCartItems
 }
 
