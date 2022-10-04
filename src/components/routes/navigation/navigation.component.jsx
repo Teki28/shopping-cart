@@ -5,18 +5,18 @@ import { ReactComponent as CrownLogo } from '../../../assets/crown.svg'
 import { signOutUser } from "../../../utils/firebase/firebase.utils"
 import CartIcon from "../../cart-icon/cart-icon.component"
 import CartDropdown from "../../cart-dropdown/cart-dropdown"
-import { useSelector } from "react-redux"
+import { useSelector,useDispatch } from "react-redux"
 import { selectCurrentUser } from "../../../store/user/user.selector"
 import { selectIsCartOpen } from "../../../store/cart/cart.selector"
+import { signOutStart } from "../../../store/user/user.action"
 
 const Navigation = () => {
   // const {currentUser} = useContext(UserContext);
   const currentUser = useSelector(selectCurrentUser)
   const isCartOpen = useSelector(selectIsCartOpen)
+  const dispatch = useDispatch()
   
-  const signOutHandler = async ()=>{
-    await signOutUser();
-  }
+  const signOutUser = ()=> dispatch(signOutStart())
 
   
   return (
@@ -31,7 +31,7 @@ const Navigation = () => {
           </NavLink>
           {
             currentUser ? (
-              <NavLink as='span' onClick={signOutHandler}>SIGN OUT</NavLink>
+              <NavLink as='span' onClick={signOutUser}>SIGN OUT</NavLink>
             ) : (
               <NavLink to="/auth">SIGN IN</NavLink>
             )
