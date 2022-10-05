@@ -63,7 +63,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
       console.log('error creating the user', error.message);
     }
   }
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -97,10 +97,20 @@ export const getCategoriesDocuments = async () => {
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-  return categoryMap
+  return querySnapshot.docs.map(docSnapshot => docSnapshot.data());
+
+  //   // return categoryMap
+}
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    )
+  })
 }
